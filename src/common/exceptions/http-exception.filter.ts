@@ -13,7 +13,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
-    const error = exception.getResponse() as
+    const error = exception.getResponse() as  //Error 를 string 과 json 두 형태로 받음
       | string
       | { error: string; statusCode: number; message: string | string[] };
 
