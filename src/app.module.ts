@@ -3,10 +3,22 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CatsModule } from './cats/cats.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
+import { PrismaModule } from 'nestjs-prisma';
+import { prismaLoggerMiddleware } from './common/middlewares/prismaLogger.middleware';
+import { PostModule } from './repository/post/post.module';
 // import { QuizController } from './quiz/quiz.controller';
 
 @Module({
-  imports: [CatsModule],
+  imports: [
+    CatsModule,
+    PrismaModule.forRoot({
+      isGlobal: true,
+      prismaServiceOptions: {
+        middlewares: [prismaLoggerMiddleware()],
+      },
+    }),
+    PostModule,
+  ],
   controllers: [AppController],
   // 다른 서비스들을 providers 에 넣는 것은 좋은 방식이 아니다.
   // 기능 별 각 module 에서 exports: [] 에 provider를 (ex: CatsService) 넣어주는 방식으로 한다.
